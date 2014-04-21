@@ -23,25 +23,25 @@ while length(dline) > 0 && dline ~= -1,
     a(i,1)=lnum;
     a(i,2)=1;
     a(i,3)=0;
-    i=i+1
+    i=i+1;
   end
   while ~isempty(dline)
     [cstr,dline]=strtok(dline);
 	a(i,1)=lnum;
 	a(i,2)=str2num(cstr);
 	a(i,3)=1;
-	i=i+1
+	i=i+1;
   end
   dline = fgetl(mfile);
 end
 
-fprintf('Finished Parsing File\n');
+fprintf('Finished Parsing File \n');
 
 fclose(mfile);
 
 H = spconvert(a);
 
-fprintf('Finished Converting Matrix\n');
+fprintf('Finished Converting Matrix \n');
 
 
 %our randomness value
@@ -53,39 +53,19 @@ n = size(H,1)
 %max iterations before cutting off convergence
 max_iterations = 10;
 
-%build our stochastic matrix from our link matrix
-fprintf('Building the Stochastic Matrix\n');
-S = zeros(size(H));
-for i=1:size(H,1),
-	%if there are no links on site, give the random value
-	%to all links
-	if (sum(H(i,:)) == 0)
-		for j=1:size(H,2),
-			S(i,j) = 1/n;
-		end
-	%else just put the row from H
-	else
-		for j=1:size(H,2),
-			S(i,j) = H(i,j);
-		end
-	endif
-end
-fprintf('Finished building the Stochastic Matrix\n');
-
-%build the vector of ones for the google matrix
-e = ones(n,1);
-
-%build our google matrix from our stochastic matrix
-fprintf('Building the Google Matrix\n');
-G = alpha*S+(((1-alpha)/n)*(e*e'));
-fprintf('Finish Building the Google Matrix\n');
 %build our pagerank vector
+fprintf('Building Elements\n');
 pagerank = (1/n)*ones(1,n);
+rowsumvector = ones(1,n)*H;
+nonzerorows = find(rowsumvector);
+zerorows = setdiff(1:n,nonzerorows); l = length(zerorows);
+a = sparse(zerorows,ones(l,1),ones(l,1),n,1);
+fprintf('Finished Building Elements\n');
 
 %run the power method on our google matrix and pagerank vector
 for i=1:max_iterations,
-	fprintf('Iteration %d\n',i);
-	pagerank = pagerank*G;
+	fprintf('Finished Iteration %d\n',i);
+	pagerank = alpha*pagerank*H + (alpha*(pagerank*a)*(1/n)*ones(1,n));
 end
 
 %print our for each page

@@ -1,2 +1,2 @@
 first:
-	octave pagerank_first.m
+	octave new_pagerank.m
