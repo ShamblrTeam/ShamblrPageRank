@@ -1,7 +1,7 @@
 %our initial matrix
 % H = [0,1/2,1/2,0,0,0; 0,0,0,0,0,0; 1/3,1/3,0,0,1/3,0; 0,0,0,0,1/2,1/2; 0,0,0,1/2,0,1/2; 0,0,0,1,0,0];
 
-filename = 'fixed_minimized_adjacency_numbers.txt';
+filename = argv(){1}
 
 mfile = fopen(filename,'r');
 if ( mfile == -1 )
@@ -51,7 +51,7 @@ alpha = .9;
 n = size(H,1)
 
 %max iterations before cutting off convergence
-max_iterations = 10;
+max_iterations = 50;
 
 %build our pagerank vector
 fprintf('Building Elements\n');
@@ -69,25 +69,4 @@ for i=1:max_iterations,
 end
 
 %print our for each page
-dlmwrite('pagerank_values.txt',pagerank);
-
-
-% print a sorted list of our pages by pagerank
-
-%pagerank_sorted_list = zeros(1,n);
-%sorting_rank = pagerank;
-%for i=1:n,
-%	max_val = 0;
-%	max_index = 0;
-%	for j=1:n,
-%		if max_val < sorting_rank(1,j),
-%			max_val = sorting_rank(1,j);
-%			max_index = j;
-%		endif
-%	end
-%	sorting_rank(1,max_index) = 0;
-%	pagerank_sorted_list(1,i) = max_index;
-%end
-
-%print out our sorted rank, the value are indexes
-%pagerank_sorted_list
+dlmwrite(argv(){2},pagerank');
