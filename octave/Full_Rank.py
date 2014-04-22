@@ -2,29 +2,31 @@ import subprocess
 import sys
 from os import walk
 
-
 listOfFileToProcess = []
 filePreFix = ""
-if len(sys.argv) < 1:
+connection_location = ""
+
+if len(sys.argv) < 2:
 	connection_location = "test_adjacency.txt"
-else if len(sys.argv) == 1:
+elif len(sys.argv) == 2:
 	connection_location = sys.argv[1]
-else if len(sys.arg == 2):
+elif len(sys.argv) == 3:
 	if(sys.argv[1] == "-c"):
 		#Read in list of files in the directory
 		#code borrowed from: http://stackoverflow.com/questions/3207219/how-to-list-all-files-of-a-directory-in-python
 		mypath="."
-		filePreFix = argv[2]
+		filePreFix = sys.argv[2]
 		for (dirpath, dirnames, filenames) in walk(mypath):
 		    for currFile in filenames:
-		    	if currFile.startswith(filePreFix):
+		    	if str(currFile).startswith(filePreFix):
 		    		listOfFileToProcess.append(currFile)
 		    break
-	else:
-		print "Usage: "
-		print "Process segemented files: Full_Rank.py -c 'filename' \n"
-		print "Process single file:      Full_Rank.py 'filename'\n"
-		print "Process defualt test_adjancency.txt:  Full_Rank.py\n"
+else:
+	print "Usage: "
+	print "Process segemented files: Full_Rank.py -c 'filename' \n"
+	print "Process single file:      Full_Rank.py 'filename'\n"
+	print "Process defualt test_adjancency.txt:  Full_Rank.py\n"
+
 
 if len(listOfFileToProcess) == 0:
 	listOfFileToProcess.append(connection_location)
