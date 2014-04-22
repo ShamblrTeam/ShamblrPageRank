@@ -1,0 +1,5 @@
+#this command will run and dump all connections, but it will take a while
+psql -U cs585 -d cs585 -c "Copy (select t2.blog_name , t1.blog_name from
+(select * from note A where type='reblog') t1
+inner join
+(select * from post B) t2 on t1.post_id = t2.post_id) TO STDOUT CSV" | split -b 1024m -a 3 - reblog_info_01_parts
