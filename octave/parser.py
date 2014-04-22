@@ -41,7 +41,7 @@ for currFile in listOfFileToProcess:
 
 	#read the file into dict
 	for entry in inputFile.readlines():
-		if len(entry) > 2:
+		if len(entry) > 2 and "," in entry:
 			OrigBlogName, ReblogName = entry.rstrip().split(',')
 			if (OrigBlogName not in adj_list):
 				adj_list[OrigBlogName] = []
