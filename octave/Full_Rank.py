@@ -1,26 +1,52 @@
 import subprocess
 import sys
+from os import walk
 
-if len(sys.argv) > 1:
-	connection_location = sys.argv[1]
-else:
+
+listOfFileToProcess = []
+filePreFix = ""
+if len(sys.argv) < 1:
 	connection_location = "test_adjacency.txt"
+else if len(sys.argv) == 1:
+	connection_location = sys.argv[1]
+else if len(sys.arg == 2):
+	if(sys.argv[1] == "-c"):
+		#Read in list of files in the directory
+		#code borrowed from: http://stackoverflow.com/questions/3207219/how-to-list-all-files-of-a-directory-in-python
+		mypath="."
+		filePreFix = argv[2]
+		for (dirpath, dirnames, filenames) in walk(mypath):
+		    for currFile in filenames:
+		    	if currFile.startswith(filePreFix):
+		    		listOfFileToProcess.append(currFile)
+		    break
+	else:
+		print "Usage: "
+		print "Process segemented files: Full_Rank.py -c 'filename' \n"
+		print "Process single file:      Full_Rank.py 'filename'\n"
+		print "Process defualt test_adjancency.txt:  Full_Rank.py\n"
 
-adjacency_file_location = connection_location.split('.')[0] + "_integers.txt"
+if len(listOfFileToProcess) == 0:
+	listOfFileToProcess.append(connection_location)
+
+
+
+adjacency_file_location = listOfFileToProcess[0].split('.')[0] + "_integers.txt"
 
 blogs = dict()
-
-connections = open(connection_location,'r')
 f = open(adjacency_file_location,'w')
-for a in connections.readlines():
-	if len(a.strip().split(',')) == 2:
-		nodes = a.strip().split(',')
-		if nodes[0] not in blogs:
-			blogs[nodes[0]] = len(blogs)+1
-		if nodes[1] not in blogs:
-			blogs[nodes[1]] = len(blogs)+1
-		f.write(str(blogs[nodes[0]]) + " " + str(blogs[nodes[1]]) + "\n")
-f.write(str(len(blogs)+1) + " " + str(len(blogs)+1))
+for curr_connection_location in listOfFileToProcess:
+	connections = open(curr_connection_location,'r')
+	
+	for a in connections.readlines():
+		if len(a.strip().split(',')) == 2:
+			nodes = a.strip().split(',')
+			if nodes[0] not in blogs:
+				blogs[nodes[0]] = len(blogs)+1
+			if nodes[1] not in blogs:
+				blogs[nodes[1]] = len(blogs)+1
+			f.write(str(blogs[nodes[0]]) + " " + str(blogs[nodes[1]]) + "\n")
+	f.write(str(len(blogs)+1) + " " + str(len(blogs)+1))
 
 f.close()
 
