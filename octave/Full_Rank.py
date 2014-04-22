@@ -18,7 +18,7 @@ elif len(sys.argv) == 3:
 		filePreFix = sys.argv[2]
 		for (dirpath, dirnames, filenames) in walk(mypath):
 		    for currFile in filenames:
-		    	if str(currFile).startswith(filePreFix):
+		    	if str(currFile).startswith(filePreFix) and ("integers.txt" not in str(currFile)) and ("_names.txt" not in str(currFile))::
 		    		listOfFileToProcess.append(currFile)
 		    break
 else:
@@ -52,7 +52,7 @@ for curr_connection_location in listOfFileToProcess:
 
 f.close()
 
-names_file_location = connection_location.split('.')[0] + "_names.txt"
+names_file_location = listOfFileToProcess[0].split('.')[0] + "_names.txt"
 f = open(names_file_location,'w')
 for a in sorted(blogs):
 	f.write(str(a) + " " + str(blogs[a]) + "\n")

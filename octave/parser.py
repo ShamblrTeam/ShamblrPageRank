@@ -19,7 +19,7 @@ elif len(sys.argv) == 3:
 		filePreFix = sys.argv[2]
 		for (dirpath, dirnames, filenames) in walk(mypath):
 		    for currFile in filenames:
-		    	if str(currFile).startswith(filePreFix):
+		    	if str(currFile).startswith(filePreFix) and ("integers.txt" not in str(currFile)) and ("_names.txt" not in str(currFile)):
 		    		listOfFileToProcess.append(currFile)
 		    break
 else:
